@@ -1,38 +1,193 @@
-.App {
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;600&display=swap');
+
+.body {
+  height: 100vh;
+  width: 100%;
+  background: 
+     linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),/* the gradient on top, adjust color and opacity to your taste */
+      url("img/bg-mountain.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: Montserrat;
+}
+
+.dashboard-body {
+    width: 100%;
+    height: 100vh;
+}
+
+.dashboard-container {
+  margin-top: 5vh;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  font-family: Montserrat;
+  overflow: hidden;
+}
+
+.dashboard {
+  width: 90%;
+  flex-direction: column;
+  height: 80vh;
+  border-radius: 45px;
+  display: flex;
+  align-items: center;
+  background-color: #F6F6F6;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+#dissmiss {
+  font-weight: bold;
+}
+
+#dismiss:hover {
+  cursor: pointer;
+  color: #292929;
+}
+
+.dashboard::-webkit-scrollbar {
+  display: none;
+}
+
+input, label {
+  display: block;
+}
+
+.search-btn {
+  height: 1.8rem;
+  width: 80px;
+  margin-top: 2vh;
   text-align: center;
+  color: white;
+  padding-top: 2px;
+  background-color: black;
+  border-radius: 25px;
+  position: relative;
+  right: 40px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.search-btn:hover {
+  cursor: pointer;
+  background-color: rgb(27, 27, 27);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.input {
+  height: 1.8rem;
+  width: 50vw;
+  border-radius: 25px;
+  border-color: black;
+  margin-top: 2vh;
+  padding-left: 10px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.input-locked {
+  background-color: black;
+  height: 1.8rem;
+  width: 50vw;
+  border-radius: 25px;
+  border-color: black;
+  margin-top: 2vh;
+  padding-left: 10px;
+}
+
+.header-nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px 20px;
+}
+
+.no-margin {
+  margin-top: 0 !important;
+}
+
+.password-btns {
+  margin-top: 5vh;
+}
+
+.password-btns .cute-btn {
+  margin-right: 3vw;
+}
+
+.cute-btn {
+  font-size: 12px;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  display: flex;
+  align-items: center;
+  height: 4vh;
+  line-height: 1vh;
+  padding-top: 3vh;
+  border-radius: 20px;
+}
+
+.cute-btn {
+  cursor: pointer;
+}
+
+.green {
+  background-color: #9BCC85;
+}
+
+.green:hover {
+  background-color: #3f5037;
+}
+
+.red {
+  background-color: #D63939;
+}
+
+.red:hover {
+  background-color: #8d2828;
+}
+
+.purple {
+  background-color: #8D4D98;
+}
+
+.purple:hover {
+  background-color: #532e5a;
+}
+
+.access-sidebar {
+  background-color: rgb(253, 253, 253);
+  width: 40%;
+  height: 100%;
+  float: right;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.app-container {
+  margin-top: 5vh;
+  width: 80%; 
+  height: 55vh;
+}
+
+.light-text {
+  font-family: Montserrat;
+  font-weight: 300;
+}
+
+.input-box {
+  width: 100%;
+  overflow: hidden;
+}
+
+.application-card {
+  width: 100%;
+  background-color: #292929;
   color: white;
+  border-radius: 25px;
+  padding: 20px;
+  margin-top: 5vh;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.white {
+  background-color: white;
 }
