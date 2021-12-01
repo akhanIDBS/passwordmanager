@@ -14,6 +14,7 @@ function Dashboard() {
   const [applications, setApplications] = React.useState([]);
   const [applicationName, setApplicationName] = React.useState('');
   const [alert, setAlert] = React.useState(false);
+  const [deleteAlert, setDeleteAlert] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
 
   function updateApplicationName(e) {
@@ -97,6 +98,16 @@ function Dashboard() {
                             :
                             (<></>)
                         }
+                        {
+                          deleteAlert ? 
+                          (<div class="mt-3 alert alert-warning d-flex justify-content-between" role="alert">
+                              <p>Successfully Deleted Application</p>
+                              <p id="dismiss" onClick={() => setDeleteAlert(false)}>X</p>
+                            </div>
+                          )
+                          :
+                          (<></>)
+                        }
                       </div>
                     </div>
                   </form>
@@ -105,6 +116,8 @@ function Dashboard() {
                       return (
                         <ApplicationCard
                           _id={passwordSection._id}
+                          setApplications={setApplications}
+                          setDeleteAlert={setDeleteAlert}
                         />
                       );
                     })}

@@ -92,7 +92,44 @@ router.post('/add-application', (req, res) => {
             })
         })
 
-})
+});
+
+router.post('/delete-application', (req, res) => {
+
+    let appID = req.body.appID;
+    let userID = new ObjectId(req.body.userID);
+
+    User.find({userID})
+    .then(result => {
+        
+        let applications = result[0].applications;
+        let updatedApplications = applications.filter((value, index, arr) => { return value._id != appID});
+        
+        User.updateOne({ _id: userID },
+            { $set: { applications: updatedApplications } },
+            function (err) {
+                if (err) {
+                    res.json({
+                        status: "FAIL",
+                        message: err
+                    })
+                } else {
+                    res.json({
+                        status: "SUCCESS",
+                        applications: updatedApplications
+                    })
+                }
+            })
+
+    })
+    .catch(err => {
+        res.json({
+            status: "FAIL",
+            message: "There was an error - " + err,
+        });
+    });
+ 
+});
 
 router.get('/get-application/:id/:userID', (req, res) => {
 

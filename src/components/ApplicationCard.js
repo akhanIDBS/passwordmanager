@@ -15,7 +15,8 @@ function ApplicationCard(props) {
         locked: true,
         current_password: '',
         unlock_date: '',
-        name: ''
+        name: '',
+        _id: ''
     });
     const [loading, setLoading] = React.useState(true);
     
@@ -170,9 +171,28 @@ function ApplicationCard(props) {
 
         }
 
-
     }
 
+    function deleteApplication() {
+
+        const data = {
+            userID: userId,
+            appID: passwordDetails._id
+        }
+
+        const url = urlstart+'/user/delete-application';
+
+        axios.post(url, data)
+        .then(response => {
+            console.log(response.data.applications);
+            props.setApplications(response.data.applications);
+            props.setDeleteAlert(true);
+        })
+        .catch(err => {
+            console.log("There was an error " + err);
+        })
+
+    }
 
     return (
         <div className="application-card">
@@ -213,7 +233,7 @@ function ApplicationCard(props) {
                                         <div className="cute-btn purple" onClick={() => lockPassword()}>
                                             Lock
                                         </div>
-                                        <div className="cute-btn red">
+                                        <div className="cute-btn red" onClick={() => deleteApplication()}>
                                             Delete
                                         </div>
                                     </div>
