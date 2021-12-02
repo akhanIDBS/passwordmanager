@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
 import ApplicationCard from './components/ApplicationCard';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Form, Row, Col } from 'react-bootstrap';
+import { Button, Form, Row, Col, Container } from 'react-bootstrap';
+import { FaKey, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
+
+
 import axios from 'axios';
 import urlstart from './urlstart'
 
@@ -56,7 +59,7 @@ function Dashboard() {
     axios.get(url)
       .then(response => {
         setActiveUser(response.data.user[0]);
-        setApplications(activeUser.applications);
+        setApplications(response.data.user[0].applications);
         setLoading(false);
       })
       .catch(e => {
@@ -66,68 +69,65 @@ function Dashboard() {
   }, [activeUser]);
 
   return (
-    <div class="dashboard-body">
-      <div class="header-nav">
-        <div class="logo">P</div>
-        <div class="title">Password Manager</div>
-        <div class="logout">Logout</div>
-      </div>
-      <div class="dashboard-container">
-        <div class="dashboard">
-          {
-            loading ? (
-              <p>Loading...</p>
-            )
+    <Row id="dashboard-body" style={{height: '100vh', width: '100vw', margin: 0}}>
+      
+      <Col xs={2} md={2} style={{height: '100vh', backgroundColor: '#F7FAFA', borderRight: 'solid #7EA8AD 10px'}}>
+        
+        <Row style={
+          {height: '15vh', display: 'flex', justifyContent: 'center', 
+          alignItems: 'center', textAlign: 'center', marginBottom: '10vh'}
+          }>
+          <h2>PM.</h2>
+        </Row>
+        <Row className="side-bar-icon side-bar-icon-selected">
+          <span><FaKey size={40} className="icon" /></span>
+          <p className="light-text">Passwords</p>
+        </Row>
+        <Row className="side-bar-icon">
+          <span><FaUserCircle size={40} className="icon" /></span>
+          <p className="light-text">Account</p>
+        </Row>
+        <Row className="side-bar-icon">
+          <span><FaSignOutAlt size={40} className="icon" /></span>
+          <p className="light-text">Logout</p>
+        </Row>
+
+      </Col>
+      
+
+      <Col xs={10} md={10} style={{fontFamily: 'Montserrat', color: '#626363'}}>
+        <Container style={{height: '100vh', paddingTop: '15vh'}}>
+          <div style={{width: '100%', marginBottom: '5vh'}}>
+            <input 
+            className="add-application-input" 
+            placeholder="Application Name..." 
+            style={{width: '100%'}}
+            onChange={e => updateApplicationName(e)}
+            value={applicationName}
+            />
+            <button
+             className="add-application-btn"
+             onClick={() => addApplication()}>Add</button>
+          </div>
+          <div className="application-container" style={{height: '65vh'}}>
+            {
+              loading ? 
+              (
+                <p>Loading...</p>
+              )
               :
               (
-                <>
-                  <form>
-                    <div class="row" style={{ marginTop: "5vh" }}>
-                      <div class="col">
-                        <label htmlFor="app-name"><b>Application Name</b></label>
-                        <div style={{ display: "flex" }}>
-                          <input id="app-name" class="input" onChange={e => updateApplicationName(e)} value={applicationName}></input>
-                          <div className="search-btn" onClick={() => addApplication()}>Add</div>
-                        </div>
-                        {
-                          alert ?
-                            (<div class="mt-3 alert alert-success d-flex justify-content-between" role="alert">
-                              <p>Successfully Added Application</p>
-                              <p id="dismiss" onClick={() => setAlert(false)}>X</p>
-                            </div>)
-                            :
-                            (<></>)
-                        }
-                        {
-                          deleteAlert ? 
-                          (<div class="mt-3 alert alert-warning d-flex justify-content-between" role="alert">
-                              <p>Successfully Deleted Application</p>
-                              <p id="dismiss" onClick={() => setDeleteAlert(false)}>X</p>
-                            </div>
-                          )
-                          :
-                          (<></>)
-                        }
-                      </div>
-                    </div>
-                  </form>
-                  <div class="app-container">
-                    {applications.map(passwordSection => {
-                      return (
-                        <ApplicationCard
-                          _id={passwordSection._id}
-                          setApplications={setApplications}
-                          setDeleteAlert={setDeleteAlert}
-                        />
-                      );
-                    })}
-                  </div>
-                </>
+                  applications.map( application => {
+                    return <ApplicationCard _id={application._id} setApplications={setApplications} />
+                  })
               )
-          }
-        </div>
-      </div>
-    </div>
+            }
+          </div>
+        </Container>
+      </Col>
+
+
+    </Row>
   );
 }
 

@@ -4,43 +4,43 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Password from '../objects/Password';
 import user from '../testdata/testusers';
 import { Button, Form, Row, Col } from 'react-bootstrap';
+import { FaMagic, FaLock, FaTrashAlt } from 'react-icons/fa'
 import axios from 'axios';
 import urlstart from '../urlstart'
 
 function ApplicationCard(props) {
 
     const userId = "61a4df815796008158e2db5c";
-    const [passwordDetails, setPasswordDetails] = 
-    React.useState({
-        locked: true,
-        current_password: '',
-        unlock_date: '',
-        name: '',
-        _id: ''
-    });
+    const [passwordDetails, setPasswordDetails] =
+
+        React.useState({
+            locked: true,
+            current_password: '',
+            unlock_date: '',
+            name: '',
+            _id: ''
+        });
+
     const [loading, setLoading] = React.useState(true);
-    
+
     useEffect(() => {
 
-        console.log(passwordDetails);
-        
         if (loading) {
-            const url = urlstart+`/user/get-application/${props._id}/${userId}`
+            const url = urlstart + `/user/get-application/${props._id}/${userId}`
             axios.get(url)
-            .then(response => {
-                console.log(response.data.result);
-                setPasswordDetails(response.data.result);
-                setLoading(false);
-            })  
-            .catch(err => {
-                console.log("There was an error");
-            });
+                .then(response => {
+                    setPasswordDetails(response.data.result);
+                    setLoading(false);
+                })
+                .catch(err => {
+                    console.log("There was an error");
+                });
         }
 
         const intervalId = setInterval(() => {
 
             if (passwordDetails.locked && !loading) {
-                
+
                 let unlockDate = new Date(passwordDetails.unlock_date);
 
                 setRemainingDays(DateDiff.inDays(new Date(), unlockDate));
@@ -147,8 +147,8 @@ function ApplicationCard(props) {
 
             const currentDate = new Date();
             const lockDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), currentDate.getHours(), currentDate.getMinutes(), currentDate.getSeconds());
-            const unlockDate = new Date(lockDate.getFullYear(), lockDate.getMonth(), lockDate.getDate()+7, lockDate.getHours(), lockDate.getMinutes(), lockDate.getSeconds());
-            
+            const unlockDate = new Date(lockDate.getFullYear(), lockDate.getMonth(), lockDate.getDate() + 7, lockDate.getHours(), lockDate.getMinutes(), lockDate.getSeconds());
+
             const data = {
                 userId: userId,
                 applicationId: props._id,
@@ -156,18 +156,18 @@ function ApplicationCard(props) {
                 unlockDate: unlockDate
             }
 
-            const url = urlstart+'/user/lock-application'
+            const url = urlstart + '/user/lock-application'
 
             setLoading(true);
 
             axios.post(url, data)
-            .then( response => {
-                setLoading(false);
-                setPasswordDetails(response.data.result);
-            })
-            .catch( err => {
-                console.log("There was an error - " + err);
-            })
+                .then(response => {
+                    setLoading(false);
+                    setPasswordDetails(response.data.result);
+                })
+                .catch(err => {
+                    console.log("There was an error - " + err);
+                })
 
         }
 
@@ -180,68 +180,64 @@ function ApplicationCard(props) {
             appID: passwordDetails._id
         }
 
-        const url = urlstart+'/user/delete-application';
+        const url = urlstart + '/user/delete-application';
 
         axios.post(url, data)
-        .then(response => {
-            console.log(response.data.applications);
-            props.setApplications(response.data.applications);
-            props.setDeleteAlert(true);
-        })
-        .catch(err => {
-            console.log("There was an error " + err);
-        })
+            .then(response => {
+                console.log(response.data.applications);
+                props.setApplications(response.data.applications);
+                props.setDeleteAlert(true);
+            })
+            .catch(err => {
+                console.log("There was an error " + err);
+            })
 
     }
 
     return (
-        <div className="application-card">
-            {
-                loading ?
-                (
-                    <>
-                        <p>Loading...</p>
-                    </>
-                )
-                :
-                (
-                        passwordDetails.locked ?
-                            (
-                                <>
-                                    <p style={{ fontWeight: 'bold', fontSize: '18px' }}>{passwordDetails.name}</p>
-                                    <div style={{ display: "flex" }}>
-                                        <label htmlFor="app-password-locked" style={{ marginTop: '0.5vh', marginRight: '10px' }}>Password: </label>
-                                        <div id="app-password=locked" class="input-locked no-margin"></div>
-                                    </div>
-                                    <div className="password-btns" style={{ display: "flex", fontWeight: '200' }}>
-                                        This password is locked for {remainingDays} days, {remainingHours} hours, {remainingMinutes} minutes, {remainingSeconds} seconds.
-                                    </div>
-                                </>
-                            )
-                            :
-                            (
-                                <>
-                                    <p style={{ fontWeight: 'bold', fontSize: '18px' }}>{passwordDetails.name}</p>
-                                    <div style={{ display: "flex" }}>
-                                        <label htmlFor="app-password" style={{ marginTop: '0.5vh', marginRight: '10px' }}>Password: </label>
-                                        <div id="app-password" class="input white no-margin"><p style={{ color: 'black', marginTop: '0.3vh' }}>{password}</p></div>
-                                    </div>
-                                    <div className="password-btns" style={{ display: "flex" }}>
-                                        <div className="cute-btn green" onClick={() => generateNewPassword()}>
-                                            Generate New Password
-                                        </div>
-                                        <div className="cute-btn purple" onClick={() => lockPassword()}>
-                                            Lock
-                                        </div>
-                                        <div className="cute-btn red" onClick={() => deleteApplication()}>
-                                            Delete
-                                        </div>
-                                    </div>
-                                </>
-                            )
-                )
-            }
-        </div>
+        <Row style={{ height: '10vh', backgroundColor: '#F7FAFA', paddingRight: '20px', marginBottom: '3vh' }}>
+            <Col xs={1} style={{ backgroundColor: '#7EA8AD', height: '100%' }}>
+
+            </Col>
+            <Col xs={2} className="app-col-info">
+                <p className="bold">Name</p>
+                <p>{passwordDetails.name}</p>
+            </Col>
+            <Col xs={2} className="app-col-info">
+                <p className="bold">Password</p>
+                {passwordDetails.locked ? (<p><FaLock /></p>) : (<p>{password}</p>)}
+            </Col>
+            <Col xs={3} className="app-col-info">
+                <p className="bold">Time Remaining</p>
+                {
+                    passwordDetails.locked ?
+                        (<p>{remainingDays}d : {remainingHours}h : {remainingMinutes}m : {remainingSeconds}s</p>)
+                        :
+                        (<p>-</p>)
+                }
+            </Col>
+            <Col className="function-icons">
+                {
+                    passwordDetails.locked ?
+                        (
+                            <>
+                                <FaMagic className="disabled" color={"#436585"} size={20} />
+                                <FaLock className="disabled" color={"#7EA8AD"} size={20} />
+                                <FaTrashAlt className="disabled" color={"#970E0E"} size={20} />
+                            </>
+                        )
+                        :
+                        (
+                            <>
+                                <FaMagic onClick={() => generateNewPassword()} className="enabled" color={"#436585"} size={20} />
+                                <FaLock onClick={() => lockPassword()} className="enabled" color={"#7EA8AD"} size={20} />
+                                <FaTrashAlt onClick={() => deleteApplication()} className="enabled" color={"#970E0E"} size={20} />
+                            </>
+                        )
+                }
+
+            </Col>
+        </Row>
     );
 }
 

@@ -143,6 +143,7 @@ router.get('/get-application/:id/:userID', (req, res) => {
             return item._id == appID;
         })[0];
 
+
         res.json({
             status: "SUCCESS",
             result: application
