@@ -19,6 +19,7 @@ function Dashboard() {
   const [alert, setAlert] = React.useState(false);
   const [deleteAlert, setDeleteAlert] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
+  const [activePage, setActivePage] = React.useState('Passwords');
 
   function updateApplicationName(e) {
     setApplicationName(e.target.value);
@@ -79,15 +80,15 @@ function Dashboard() {
           }>
           <h2>PM.</h2>
         </Row>
-        <Row className="side-bar-icon side-bar-icon-selected">
+        <Row className={activePage === 'Passwords' ? 'side-bar-icon side-bar-icon-selected' : 'side-bar-icon'} onClick={() => setActivePage('Passwords')}>
           <span><FaKey size={40} className="icon" /></span>
           <p className="light-text">Passwords</p>
         </Row>
-        <Row className="side-bar-icon">
+        <Row className={activePage === 'Account' ? 'side-bar-icon side-bar-icon-selected' : 'side-bar-icon'} onClick={() => setActivePage('Account')}>
           <span><FaUserCircle size={40} className="icon" /></span>
           <p className="light-text">Account</p>
         </Row>
-        <Row className="side-bar-icon">
+        <Row className={activePage === 'Logout' ? 'side-bar-icon side-bar-icon-selected' : 'side-bar-icon'} onClick={() => setActivePage('Logout')}>
           <span><FaSignOutAlt size={40} className="icon" /></span>
           <p className="light-text">Logout</p>
         </Row>
@@ -97,7 +98,10 @@ function Dashboard() {
 
       <Col xs={10} md={10} style={{fontFamily: 'Montserrat', color: '#626363'}}>
         <Container style={{height: '100vh', paddingTop: '15vh'}}>
-          <div style={{width: '100%', marginBottom: '5vh'}}>
+          {
+            activePage === 'Passwords' ? (
+            <>
+            <div style={{width: '100%', marginBottom: '5vh'}}>
             <input 
             className="add-application-input" 
             placeholder="Application Name..." 
@@ -122,7 +126,20 @@ function Dashboard() {
                   })
               )
             }
-          </div>
+            </div>
+          </>
+            )
+            :
+            null
+          }
+          {
+            activePage === 'Account' ? 
+            (<p style={{textAlign: 'center'}}>User Account Details</p>) : null
+          }
+          {
+            activePage == 'Logout' ? 
+            (<p style={{textAlign: 'center'}}>Are you sure you'd like to logout</p>) : null
+          }
         </Container>
       </Col>
 
