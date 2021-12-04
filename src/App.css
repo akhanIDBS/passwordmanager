@@ -146,3 +146,51 @@ h2 {
   overflow-y: scroll;
   overflow-x: hidden;
 }
+
+.menu {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #7EA8AD;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  color: #C5C5C5;
+  font-family: 'Montserrat';
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-open {
+  width: 50vw;
+}
+
+.menu:hover{
+  cursor: pointer;
+}
+
+.menu-container {
+  width: auto;
+  height: inherit;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.low-ss-input {
+  width: 90%;
+  border: 4px solid #7EA8AD;
+}
+
+.low-ss-add-btn {
+  width: 80px;
+  border: none;
+  background-color: #7EA8AD;
+  color: white;
+  margin-top: 2vh;
+  font-family: 'Montserrat';
+  font-size: 0.7rem;
+  height: 3vh;
+}

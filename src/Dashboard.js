@@ -8,6 +8,7 @@ import { FaKey, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 
 import axios from 'axios';
 import urlstart from './urlstart'
+import DashboardLowSS from './low-ss/DashboardLowSS';
 
 function Dashboard() {
 
@@ -20,6 +21,8 @@ function Dashboard() {
   const [deleteAlert, setDeleteAlert] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [activePage, setActivePage] = React.useState('Passwords');
+  const [screenWidth, setScreenWidth] = React.useState(0);
+  const [screenWidthSet, setScreenWidthSet] = React.useState(false);
 
   function updateApplicationName(e) {
     setApplicationName(e.target.value);
@@ -53,6 +56,14 @@ function Dashboard() {
   }
 
   useEffect(() => {
+    
+    let width = window.innerWidth;
+    setScreenWidth(width);
+    setScreenWidthSet(true);
+
+  }, [screenWidth])
+
+  useEffect(() => {
 
     const url = `${urlstart}/user/get-user/${_id}`;
 
@@ -70,81 +81,107 @@ function Dashboard() {
   }, [activeUser]);
 
   return (
-    <Row id="dashboard-body" style={{height: '100vh', width: '100vw', margin: 0}}>
-      
-      <Col xs={2} md={2} style={{height: '100vh', backgroundColor: '#F7FAFA', borderRight: 'solid #7EA8AD 10px'}}>
-        
-        <Row style={
-          {height: '15vh', display: 'flex', justifyContent: 'center', 
-          alignItems: 'center', textAlign: 'center', marginBottom: '10vh'}
-          }>
-          <h2>PM.</h2>
-        </Row>
-        <Row className={activePage === 'Passwords' ? 'side-bar-icon side-bar-icon-selected' : 'side-bar-icon'} onClick={() => setActivePage('Passwords')}>
-          <span><FaKey size={40} className="icon" /></span>
-          <p className="light-text">Passwords</p>
-        </Row>
-        <Row className={activePage === 'Account' ? 'side-bar-icon side-bar-icon-selected' : 'side-bar-icon'} onClick={() => setActivePage('Account')}>
-          <span><FaUserCircle size={40} className="icon" /></span>
-          <p className="light-text">Account</p>
-        </Row>
-        <Row className={activePage === 'Logout' ? 'side-bar-icon side-bar-icon-selected' : 'side-bar-icon'} onClick={() => setActivePage('Logout')}>
-          <span><FaSignOutAlt size={40} className="icon" /></span>
-          <p className="light-text">Logout</p>
-        </Row>
 
-      </Col>
-      
-
-      <Col xs={10} md={10} style={{fontFamily: 'Montserrat', color: '#626363'}}>
-        <Container style={{height: '100vh', paddingTop: '15vh'}}>
-          {
-            activePage === 'Passwords' ? (
+    <>
+      {
+        screenWidthSet ?
+          (
             <>
-            <div style={{width: '100%', marginBottom: '5vh'}}>
-            <input 
-            className="add-application-input" 
-            placeholder="Application Name..." 
-            style={{width: '100%'}}
-            onChange={e => updateApplicationName(e)}
-            value={applicationName}
-            />
-            <button
-             className="add-application-btn"
-             onClick={() => addApplication()}>Add</button>
-          </div>
-          <div className="application-container" style={{height: '65vh'}}>
-            {
-              loading ? 
-              (
-                <p>Loading...</p>
-              )
-              :
-              (
-                  applications.map( application => {
-                    return <ApplicationCard _id={application._id} setApplications={setApplications} />
-                  })
-              )
-            }
-            </div>
-          </>
-            )
-            :
-            null
-          }
-          {
-            activePage === 'Account' ? 
-            (<p style={{textAlign: 'center'}}>User Account Details</p>) : null
-          }
-          {
-            activePage == 'Logout' ? 
-            (<p style={{textAlign: 'center'}}>Are you sure you'd like to logout</p>) : null
-          }
-        </Container>
-      </Col>
+              {
+                screenWidth < 866 ?
+                  (
+                    <DashboardLowSS />
+                  )
+                  :
+                  (
+                    <Row id="dashboard-body" style={{ height: '100vh', width: '100vw', margin: 0 }}>
+
+                      <Col xs={2} md={2} style={{ height: '100vh', backgroundColor: '#F7FAFA', borderRight: 'solid #7EA8AD 10px' }}>
+
+                        <Row style={
+                          {
+                            height: '15vh', display: 'flex', justifyContent: 'center',
+                            alignItems: 'center', textAlign: 'center', marginBottom: '10vh'
+                          }
+                        }>
+                          <h2>PM.</h2>
+                        </Row>
+                        <Row className={activePage === 'Passwords' ? 'side-bar-icon side-bar-icon-selected' : 'side-bar-icon'} onClick={() => setActivePage('Passwords')}>
+                          <span><FaKey size={40} className="icon" /></span>
+                          <p className="light-text">Passwords</p>
+                        </Row>
+                        <Row className={activePage === 'Account' ? 'side-bar-icon side-bar-icon-selected' : 'side-bar-icon'} onClick={() => setActivePage('Account')}>
+                          <span><FaUserCircle size={40} className="icon" /></span>
+                          <p className="light-text">Account</p>
+                        </Row>
+                        <Row className={activePage === 'Logout' ? 'side-bar-icon side-bar-icon-selected' : 'side-bar-icon'} onClick={() => setActivePage('Logout')}>
+                          <span><FaSignOutAlt size={40} className="icon" /></span>
+                          <p className="light-text">Logout</p>
+                        </Row>
+
+                      </Col>
 
 
-    </Row>
+                      <Col xs={10} md={10} style={{ fontFamily: 'Montserrat', color: '#626363' }}>
+                        <Container style={{ height: '100vh', paddingTop: '15vh' }}>
+                          {
+                            activePage === 'Passwords' ? (
+                              <>
+                                <div style={{ width: '100%', marginBottom: '5vh' }}>
+                                  <input
+                                    className="add-application-input"
+                                    placeholder="Application Name..."
+                                    style={{ width: '100%' }}
+                                    onChange={e => updateApplicationName(e)}
+                                    value={applicationName}
+                                  />
+                                  <button
+                                    className="add-application-btn"
+                                    onClick={() => addApplication()}>Add</button>
+                                </div>
+                                <div className="application-container" style={{ height: '65vh' }}>
+                                  {
+                                    loading ?
+                                      (
+                                        <p>Loading...</p>
+                                      )
+                                      :
+                                      (
+                                        applications.map(application => {
+                                          return <ApplicationCard _id={application._id} setApplications={setApplications} />
+                                        })
+                                      )
+                                  }
+                                </div>
+                              </>
+                            )
+                              :
+                              null
+                          }
+                          {
+                            activePage === 'Account' ?
+                              (<p style={{ textAlign: 'center' }}>User Account Details</p>) : null
+                          }
+                          {
+                            activePage == 'Logout' ?
+                              (<p style={{ textAlign: 'center' }}>Are you sure you'd like to logout</p>) : null
+                          }
+                        </Container>
+                      </Col>
+
+
+                    </Row>
+                  )
+              }
+            </>
+          )
+          :
+          (
+            <p>Loading...</p>
+          )
+      }
+
+    </>
   );
 }
 
